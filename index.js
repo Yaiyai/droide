@@ -5,6 +5,8 @@ const cors = require('cors');
 
 //CORS
 app.use(cors());
+//Lectura y parseo del body
+app.use(express.json());
 
 //Rutas
 app.use('/radar', require('./routes/radar.routes'));

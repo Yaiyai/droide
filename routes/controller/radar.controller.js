@@ -1,5 +1,9 @@
+const Dron = require('../../model/droide.model');
+
 const setRadar = (req, res) => {
-	console.log('holi');
+	const shootTo = new Dron(req.body.protocols);
+	shootTo.init();
+	// return shootTo
 };
 
 module.exports = setRadar;
