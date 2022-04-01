@@ -39,22 +39,9 @@ class Dron {
 	}
 
 	furthestEnemies() {
-		let furthest = null;
-		let furthestDistance = null;
-		this.scan.forEach((elm) => {
-			const distance = Math.hypot(elm.coordinates.y, elm.coordinates.x);
-			if (distance < 100) {
-				if (furthestDistance) {
-					if (furthestDistance < distance) {
-						furthest = elm;
-						furthestDistance = distance;
-					}
-				} else {
-					furthestDistance = distance;
-					furthest = elm;
-				}
-			}
-		});
+		let scan = [...this.scan];
+		scan = scan.filter((elm) => Math.hypot(elm.coordinates.x, elm.coordinates.y) < 100);
+		const furthest = scan.reduce((prev, current) => (Math.hypot(prev.coordinates.x, prev.coordinates.y) > Math.hypot(current.coordinates.x, current.coordinates.y) ? prev : current));
 		this.shootCoord = { x: furthest.coordinates.x, y: furthest.coordinates.y };
 	}
 
