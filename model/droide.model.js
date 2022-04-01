@@ -33,23 +33,46 @@ class Dron {
 	}
 
 	closestEnemies() {
-		console.log('closestEnemies');
+		let closest = null;
+		let closestDistance = null;
+		this.scan.forEach((elm) => {
+			const distance = Math.hypot(elm.coordinates.y, elm.coordinates.x);
+			if (closestDistance) {
+				closestDistance > distance && (closest = elm);
+			} else {
+				closestDistance = distance;
+				closest = elm;
+			}
+		});
+		this.shootCoord = { x: closest.coordinates.x, y: closest.coordinates.y };
 	}
 
 	furthestEnemies() {
-		console.log('furthestEnemies');
+		let furthest = null;
+		let furthestDistance = null;
+		this.scan.forEach((elm) => {
+			const distance = Math.hypot(elm.coordinates.y, elm.coordinates.x);
+			if (furthestDistance) {
+				furthestDistance < distance && (furthest = elm);
+			} else {
+				furthestDistance = distance;
+				furthest = elm;
+			}
+		});
+		this.shootCoord = { x: furthest.coordinates.x, y: furthest.coordinates.y };
 	}
 
 	assistAllies() {
-		console.log('assistAllies');
+		let scan = this.scan.filter((elm) => elm.hasOwnProperty('allies'));
+		this.shootCoord = { x: scan[0].coordinates.x, y: scan[0].coordinates.y };
 	}
 
 	avoidCrossFire() {
-		console.log('avoidCrossFire');
+		let scan = this.scan.filter((elm) => !elm.hasOwnProperty('allies'));
+		this.shootCoord = { x: scan[0].coordinates.x, y: scan[0].coordinates.y };
 	}
 
 	prioritizeMech() {
-		console.log('prioritizeMech');
 		let scan = this.scan.filter((elm) => elm.enemies.type === 'mech');
 		if (scan.length > 0) {
 			this.shootCoord = scan[0].coordinates;
