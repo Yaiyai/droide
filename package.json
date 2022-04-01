@@ -1,0 +1,21 @@
+{
+  "name": "droideyvh",
+  "version": "1.0.0",
+  "description": "seedtag codetest 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yaiyai/droide.git"
+  },
+  "author": "yaizadelrio",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  }
+}
