@@ -9,11 +9,10 @@ class Dron {
 	}
 
 	init() {
-		console.log(this.protocols);
 		if (this.protocols.length > 1) {
 			this.isDoubleProtocol = true;
 			this.firstProtocol = this.protocols.find((elm) => elm === 'closest-enemies' || elm === 'furthest-enemies');
-			this.secondProtocol = this.protocols.find((elm) => elm !== 'closest-enemies' && elm !== 'furthest-enemies');
+			this.secondProtocol = this.protocols.filter((elm) => elm !== 'closest-enemies' && elm !== 'furthest-enemies');
 			switch (this.firstProtocol) {
 				case 'closest-enemies':
 					this.closestEnemies(this.secondProtocol);
@@ -100,7 +99,38 @@ class Dron {
 	}
 
 	filter(type) {
-		switch (type) {
+		let protocol, result;
+		if (type.length > 1) {
+			protocol = type.join('//');
+		} else {
+			protocol = type[0];
+		}
+
+		switch (protocol) {
+			case 'prioritize-mech//avoid-crossfire':
+			case 'avoid-crossfire//prioritize-mech':
+				result = this.scan.filter((elm) => elm.enemies.type === 'mech');
+				result = result.filter((elm) => !elm.hasOwnProperty('allies'));
+				return result;
+				break;
+			case 'prioritize-mech//assist-allies':
+			case 'assist-allies//prioritize-mech':
+				result = this.scan.filter((elm) => elm.enemies.type === 'mech');
+				result = result.filter((elm) => elm.hasOwnProperty('allies'));
+				return result;
+				break;
+			case 'avoid-mech//assist-allies':
+			case 'assist-allies//avoid-mech':
+				result = this.scan.filter((elm) => elm.enemies.type !== 'mech');
+				result = result.filter((elm) => elm.hasOwnProperty('allies'));
+				return result;
+				break;
+			case 'avoid-mech//avoid-crossfire':
+			case 'avoid-crossfire//avoid-crossfire':
+				result = this.scan.filter((elm) => elm.enemies.type !== 'mech');
+				result = result.filter((elm) => !elm.hasOwnProperty('allies'));
+				return result;
+				break;
 			case 'assist-allies':
 				return this.scan.filter((elm) => elm.hasOwnProperty('allies'));
 				break;
