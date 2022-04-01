@@ -1,6 +1,8 @@
 class Dron {
-	constructor(protocols) {
+	constructor(protocols, scan) {
 		this.protocols = protocols;
+		this.scan = scan;
+		this.shootCoord = {};
 	}
 
 	init() {
@@ -48,10 +50,15 @@ class Dron {
 
 	prioritizeMech() {
 		console.log('prioritizeMech');
+		let scan = this.scan.filter((elm) => elm.enemies.type === 'mech');
+		if (scan.length > 0) {
+			this.shootCoord = scan[0].coordinates;
+		}
 	}
 
 	avoidMech() {
-		console.log('avoidMech');
+		let scan = this.scan.filter((elm) => elm.enemies.type !== 'mech');
+		this.shootCoord = scan[0].coordinates;
 	}
 }
 
