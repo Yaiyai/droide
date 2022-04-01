@@ -33,54 +33,36 @@ class Dron {
 	}
 
 	closestEnemies() {
-		let closest = null;
-		let closestDistance = null;
-		this.scan.forEach((elm) => {
-			const distance = Math.hypot(elm.coordinates.y, elm.coordinates.x);
-			if (closestDistance) {
-				closestDistance > distance && (closest = elm);
-			} else {
-				closestDistance = distance;
-				closest = elm;
-			}
-		});
+		const scan = [...this.scan];
+		const closest = scan.reduce((prev, current) => (Math.hypot(prev.coordinates.x, prev.coordinates.y) > Math.hypot(current.coordinates.x, current.coordinates.y) ? current : prev));
 		this.shootCoord = { x: closest.coordinates.x, y: closest.coordinates.y };
 	}
 
 	furthestEnemies() {
-		let furthest = null;
-		let furthestDistance = null;
-		this.scan.forEach((elm) => {
-			const distance = Math.hypot(elm.coordinates.y, elm.coordinates.x);
-			if (furthestDistance) {
-				furthestDistance < distance && (furthest = elm);
-			} else {
-				furthestDistance = distance;
-				furthest = elm;
-			}
-		});
+		const scan = [...this.scan];
+		const furthest = scan.reduce((prev, current) => (Math.hypot(prev.coordinates.x, prev.coordinates.y) > Math.hypot(current.coordinates.x, current.coordinates.y) ? prev : current));
 		this.shootCoord = { x: furthest.coordinates.x, y: furthest.coordinates.y };
 	}
 
 	assistAllies() {
-		let scan = this.scan.filter((elm) => elm.hasOwnProperty('allies'));
+		const scan = this.scan.filter((elm) => elm.hasOwnProperty('allies'));
 		this.shootCoord = { x: scan[0].coordinates.x, y: scan[0].coordinates.y };
 	}
 
 	avoidCrossFire() {
-		let scan = this.scan.filter((elm) => !elm.hasOwnProperty('allies'));
+		const scan = this.scan.filter((elm) => !elm.hasOwnProperty('allies'));
 		this.shootCoord = { x: scan[0].coordinates.x, y: scan[0].coordinates.y };
 	}
 
 	prioritizeMech() {
-		let scan = this.scan.filter((elm) => elm.enemies.type === 'mech');
+		const scan = this.scan.filter((elm) => elm.enemies.type === 'mech');
 		if (scan.length > 0) {
 			this.shootCoord = scan[0].coordinates;
 		}
 	}
 
 	avoidMech() {
-		let scan = this.scan.filter((elm) => elm.enemies.type !== 'mech');
+		const scan = this.scan.filter((elm) => elm.enemies.type !== 'mech');
 		this.shootCoord = scan[0].coordinates;
 	}
 }
