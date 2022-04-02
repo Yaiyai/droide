@@ -8,45 +8,27 @@ class Dron {
 		this.secondProtocol = null;
 	}
 
+	getProtocol(first, second) {
+		const prot = {
+			'closest-enemies': () => this.closestEnemies(second),
+			'furthest-enemies': () => this.furthestEnemies(second),
+			'assist-allies': () => this.assistAllies(),
+			'avoid-crossfire': () => this.avoidCrossFire(),
+			'prioritize-mech': () => this.prioritizeMech(),
+			'avoid-mech': () => this.avoidMech(),
+		};
+		prot[first]();
+	}
+
 	init() {
 		if (this.protocols.length > 1) {
 			this.isDoubleProtocol = true;
 			this.firstProtocol = this.protocols.find((elm) => elm === 'closest-enemies' || elm === 'furthest-enemies');
 			this.secondProtocol = this.protocols.filter((elm) => elm !== 'closest-enemies' && elm !== 'furthest-enemies');
-			switch (this.firstProtocol) {
-				case 'closest-enemies':
-					this.closestEnemies(this.secondProtocol);
-					break;
-				case 'furthest-enemies':
-					this.furthestEnemies(this.secondProtocol);
-					break;
-				default:
-					break;
-			}
+			this.getProtocol(this.firstProtocol, this.secondProtocol);
 		} else if (this.protocols.length === 1) {
 			this.firstProtocol = this.protocols[0];
-			switch (this.firstProtocol) {
-				case 'closest-enemies':
-					this.closestEnemies();
-					break;
-				case 'furthest-enemies':
-					this.furthestEnemies();
-					break;
-				case 'assist-allies':
-					this.assistAllies();
-					break;
-				case 'avoid-crossfire':
-					this.avoidCrossFire();
-					break;
-				case 'prioritize-mech':
-					this.prioritizeMech();
-					break;
-				case 'avoid-mech':
-					this.avoidMech();
-					break;
-				default:
-					break;
-			}
+			this.getProtocol(this.firstProtocol);
 		}
 	}
 
