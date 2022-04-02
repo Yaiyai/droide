@@ -33,15 +33,23 @@ class Dron {
 
 	closestEnemies(type) {
 		const scan = this.filterProtocol(type);
-		const closest = scan.reduce((prev, current) => (Math.hypot(prev.coordinates.x, prev.coordinates.y) > Math.hypot(current.coordinates.x, current.coordinates.y) ? current : prev));
-		this.shootCoord = { x: closest.coordinates.x, y: closest.coordinates.y };
+		if (scan.length > 0) {
+			const closest = scan.reduce((prev, current) => (Math.hypot(prev.coordinates.x, prev.coordinates.y) > Math.hypot(current.coordinates.x, current.coordinates.y) ? current : prev));
+			this.shootCoord = { x: closest.coordinates.x, y: closest.coordinates.y };
+		} else {
+			this.shootCoord = 'Oops! No hay objetivos!';
+		}
 	}
 
 	furthestEnemies(type) {
 		let scan = this.filterProtocol(type);
-		scan = scan.filter((elm) => Math.hypot(elm.coordinates.x, elm.coordinates.y) < 100); //Always distances under 100m
-		const furthest = scan.reduce((prev, current) => (Math.hypot(prev.coordinates.x, prev.coordinates.y) > Math.hypot(current.coordinates.x, current.coordinates.y) ? prev : current));
-		this.shootCoord = { x: furthest.coordinates.x, y: furthest.coordinates.y };
+		if (scan.length > 0) {
+			scan = scan.filter((elm) => Math.hypot(elm.coordinates.x, elm.coordinates.y) < 100); //Always distances under 100m
+			const furthest = scan.reduce((prev, current) => (Math.hypot(prev.coordinates.x, prev.coordinates.y) > Math.hypot(current.coordinates.x, current.coordinates.y) ? prev : current));
+			this.shootCoord = { x: furthest.coordinates.x, y: furthest.coordinates.y };
+		} else {
+			this.shootCoord = 'Oops! No hay objetivos!';
+		}
 	}
 
 	assistAllies() {
