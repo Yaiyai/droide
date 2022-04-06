@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "test": "./tests.sh && jasmine",
+    "test": "./tests.sh",
     "jasmine": "jasmine",
     "start": "node index.js"
   },
@@ -16,6 +16,7 @@
   "author": "yaizadelrio",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.26.1",
     "express": "^4.17.3",
     "nodemon": "^2.0.15"
   },

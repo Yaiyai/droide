@@ -9,3 +9,5 @@ app.use('/radar', require('./routes/radar.routes'));
 
 //Escuchar peticiones
 app.listen(8888, () => console.log(`Servidor establecido en puerto 8888`));
+
+module.exports = app;
